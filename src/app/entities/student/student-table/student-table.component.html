@@ -1,0 +1,492 @@
+<div class="lms-table">
+
+  <mdb-card cascade="true" narrower="true">
+
+    <div class="lms-buttons-row row" [ngClass]="(buttonTypeSwitch)?'lms-buttons-grid-row':'lms-buttons-grid'">
+
+      <button mdbBtn *ngIf="buttonTypeSwitch" class="lms-button" size="sm" [mdbTooltip]="('ADD'| translate)"
+              mdbWavesEffect (click)="addStudent()"><i
+        class="fas fa-plus"></i></button>
+
+      <button *ngIf="buttonTypeSwitch" [mdbTooltip]="('Add-to-group'| translate)"
+              [disabled]="selectedElementsForDelete.length==0" mdbBtn
+              size="sm" mdbWavesEffect
+              (click)="addToGroup.show()" class="lms-button">
+        <i class="fas fa-pencil-alt"></i></button>
+
+      <button mdbBtn *ngIf="buttonTypeSwitch" [mdbTooltip]="('DELETE'| translate)" size="sm" color="danger"
+              mdbWavesEffect class="delete-button"
+              (click)="((selectedElementsForDelete.length == 0) ? warningFrame.show() : deletionFrame.show())"><i
+        class="fas fa-trash-alt"></i></button>
+
+      <div *ngIf="buttonTypeSwitch" class="dropdown info-dropdown" mdbDropdown>
+        <button mdbDropdownToggle [mdbTooltip]="('REPORTS'| translate)" mdbBtn size="sm" class="dropdown-toggle "
+                type="button"
+                mdbWavesEffect>
+          <i class="far fa-compass"></i></button>
+        <div class="dropdown-menu dropdown-menu-right dropdown-primary ">
+          <a class="dropdown-item">{{('EXPORT-TO-XLS'|translate)}}</a>
+          <a class="dropdown-item">{{('PAY-TODAY'|translate)}}</a>
+
+        </div>
+      </div>
+
+
+      <button *ngIf="!buttonTypeSwitch" mdbBtn class="lms-button" size="sm" mdbWavesEffect (click)="addStudent()">
+        <i class="fas fa-plus"></i>
+        <span> {{ "ADD" | translate}}</span>
+      </button>
+
+      <button *ngIf="!buttonTypeSwitch" [disabled]="selectedElementsForDelete.length==0" mdbBtn
+              size="sm" mdbWavesEffect
+              (click)="addToGroup.show()" class="lms-button">
+        <i class="fas fa-pencil-alt"></i> <span
+      > {{ "Add-to-group" | translate}}</span></button>
+
+      <button *ngIf="!buttonTypeSwitch" mdbBtn size="sm" color="danger" mdbWavesEffect class="delete-button"
+              (click)="((selectedElementsForDelete.length == 0) ? warningFrame.show() : deletionFrame.show())"><i
+        class="fas fa-trash-alt"></i>
+        <span> {{ "DELETE" | translate}}</span></button>
+
+      <div *ngIf="!buttonTypeSwitch" class="dropdown info-dropdown" mdbDropdown>
+        <button mdbDropdownToggle mdbBtn size="sm" class="dropdown-toggle " type="button"
+                mdbWavesEffect>
+          <i class="far fa-compass"></i> <span> {{('REPORTS'|translate)}}</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right dropdown-primary ">
+          <a class="dropdown-item">{{('EXPORT-TO-XLS'|translate)}}</a>
+          <a class="dropdown-item">{{('PAY-TODAY'|translate)}}</a>
+
+        </div>
+      </div>
+
+      <div class="md-form col ">
+        <input type="text" size="sm" class="form-control" [ngModel]="searchText" (ngModelChange)="searchItems($event)"
+               id="search-input"
+               mdbInput>
+        <label for="search-input">{{'SEARCH'|translate}}</label>
+      </div>
+      <a class="field-modal-link" (click)="buttonTypeSwitch = !buttonTypeSwitch">
+        <i *ngIf="buttonTypeSwitch" class="fas fa-ellipsis-h"></i>
+        <i *ngIf="!buttonTypeSwitch" class="fas fa-grip-horizontal"></i>
+      </a>
+      <a class="filter-modal-link" (click)="filter.show()">
+        <i class="fas fa-filter"></i>
+      </a>
+      <a class="field-modal-link" (click)="fieldFilter.show()">
+        <i class="fas fa-columns"></i>
+      </a>
+    </div>
+    <div class="row pagination-row">
+      <div class="pagination-top">
+        <nav>
+          <lms-pagination *ngIf="!!totalItems" [collectionSize]="totalItems" [(page)]="page"
+                          [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                          (pageChange)="transition()"></lms-pagination>
+        </nav>
+      </div>
+      <div class="page-text-top">
+        <div *ngIf="totalItems" class="end">
+          <div class="pt-2">
+            <div class="pages row">
+              <ng-template [ngIf]="getMaxItemsOnCurrPage() != getMinItemsOnCurrPage()" [ngIfElse]="equals">
+                <span class="small-text">{{('ROWS' | translate) + ' '}}</span>
+                <span
+                  class="bold-text small-text">{{getMinItemsOnCurrPage() + ' — ' + getMaxItemsOnCurrPage()}}</span>
+              </ng-template>
+              <ng-template #equals>
+                <span class=" small-text">{{('ROW' | translate) + ' '}}</span>
+                <span class="bold-text small-text">{{getMinItemsOnCurrPage()}}</span>
+              </ng-template>
+              <span class="small-text">{{' ' + ('OF' | translate) + ' '}}</span>
+              <span class="bold-text small-text">{{totalItems}}</span>
+              <span class=" small-text">{{'. ' + ('ON_PAGE' | translate) }}</span>
+              <span mdbDropdown class="lms-page-dropdown">
+                <a mdbDropdownToggle class="dropdown-toggle page-link filter-modal-link" mdbWavesEffect>
+                  <span class="small-text">{{itemsPerPage}}</span>
+                </a>
+                <div class="dropdown-menu lms-page-dropdown-menu dropdown-primary">
+                  <div *ngFor="let num of itemsPerPages">
+                    <a class="dropdown-item "
+                       (click)="setNumberOfElementsOnPage(num)">{{num}}</a>
+                  </div>
+                </div>
+              </span>
+              <span class=" small-text">{{'.'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-4">
+      <div class="table-wrapper table-hover">
+        <table class="table table-hover mb-0" hover="true">
+          <thead>
+
+          <tr>
+            <th>
+              <mdb-checkbox #mainCheckboxComponent (change)="onChangeMainCheckbox($event)"></mdb-checkbox>
+            </th>
+            <th></th>
+            <th></th>
+            <th nowrap class="th-lg" *ngFor="let field of columns">
+              <div *ngIf="field !== 'fullName'">
+                <a (click)="sortBy(field)">{{(namespace + '.' + field) | translate}}
+                  <mdb-icon *ngIf="field === predicate" fas [icon]="ascending ? 'sort-up' : 'sort-down'"></mdb-icon>
+                </a>
+              </div>
+              <div *ngIf="field === 'fullName'">
+                <a (click)="sortBy('firstName')">{{(namespace + '.' + field) | translate}}
+                  <mdb-icon *ngIf="'firstName' === predicate" fas
+                            [icon]="ascending ? 'sort-up' : 'sort-down'"></mdb-icon>
+                </a>
+              </div>
+            </th>
+
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr class="mobile-tbody" *ngFor="let element of elements;let i = index">
+            <th scope="row">
+              <mdb-checkbox #elementCheckboxComponent
+                            (change)="onChangeElementCheckbox($event, element)">
+              </mdb-checkbox>
+            </th>
+            <th>
+              <a [routerLink]="element.username+'/events'">
+                <i class="far fa-calendar-alt"></i>
+              </a>
+            </th>
+            <th>
+              <img *ngIf="element.imageUrl" src="{{element.imageUrl}}"
+                   class="rounded-circle"
+                   style="width:35px; height:35px">
+              <img *ngIf="!element.imageUrl"
+                   class="rounded-circle"
+                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRO0_iVWyM831R4ZbbSIRI3hlr1JNXWcck1hA&amp;usqp=CAU"
+                   style="width:35px; height:35px">
+            </th>
+            <td *ngFor="let field of columns">
+
+              <div [ngSwitch]="field">
+                <a *ngSwitchDefault [routerLink]="element.username+'/profile'">
+                  {{element[field]}}
+                </a>
+                <a *ngSwitchCase="'fullName'" [routerLink]="element.username+'/profile'">
+                  {{element.lastName + '  ' + element.firstName + '  ' + element.secondName}}
+                  <div><small>
+                    <mdb-icon class="icon" fas [icon]="element.gender"></mdb-icon>
+                    <a ngbc="calculateAge(element.birthDay)">
+                      {{calculateAge(element.birthDay) + " "}} {{('YEARS'|translate) + ", "}}
+                      {{element.birthDay |date : 'd' }}
+                      {{element.birthDay |date : 'MMMM' | translate}}</a></small></div>
+                </a>
+                <div *ngSwitchCase="'groups'">
+                  <div *ngFor="let iii of element.groups; let i = index" class="info">
+                    <a [routerLink]="element.groups[i].uuid+'/group/full-info'">
+                      {{element.groups[i].name}}
+                    </a>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'languageLevels'" class="info">
+                  <div *ngFor="let iii of element.languageLevels; let i = index">
+                    <a>
+                      {{element.languageLevels[i].language.name + ' - ' + element.languageLevels[i].name}}
+                    </a>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'contacts'" class="info">
+                  <div [ngSwitch]="contact?.type" *ngFor="let contact of element.contacts">
+                    <div *ngSwitchCase="'PHONE'">
+                      <a [routerLink]="element.username+'/profile'">
+                        <mdb-icon class="contact-icon" fas icon="mobile-alt">
+                        </mdb-icon>
+                        {{contact.value}}
+                      </a>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div>
+                      <a [href]="'mailto:'+element.email" [mdbTooltip]="element.email" class="pr-1">
+                        <mdb-icon fas icon="at"></mdb-icon>
+                      </a>
+                    </div>
+                    <div [ngSwitch]="contact?.type"
+                         *ngFor="let contact of element.contacts">
+                      <div *ngSwitchCase="'TELEGRAM'">
+                        <a [mdbTooltip]="contact.value"
+                           class="pr-1">
+                          <i class="fab fa-telegram-plane contact-icon"></i>
+                        </a>
+                      </div>
+                      <div *ngSwitchCase="'WHATSAPP'">
+                        <a [mdbTooltip]="contact.value"
+                           class="pr-1">
+                          <i class="fab fa-whatsapp contact-icon"></i>
+                        </a>
+                      </div>
+                      <div *ngSwitchCase="'VIBER'">
+                        <a [mdbTooltip]="contact.value"
+                           class="pr-1">
+                          <i class="fab fa-viber contact-icon"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td [colSpan]="columns.length + 3 ">
+              <nav>
+                <lms-pagination *ngIf="!!totalItems" [collectionSize]="totalItems" [(page)]="page"
+                                [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+
+                                (pageChange)="transition()"></lms-pagination>
+              </nav>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </mdb-card>
+
+  <div mdbModal #deletionFrame="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top"
+       id="frameToRemoveModalTop" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-notify" role="document">
+
+      <div class="modal-content text-center">
+
+        <div class="modal-header d-flex justify-content-center delete-header header-danger">
+          <p
+            class="heading lead">{{('DELETION_WARNING_MESSAGE' | translate) + '?'}}</p>
+        </div>
+
+        <div class="modal-body">
+          <mdb-icon fas icon="times" size="4x" class="animated rotateIn red-text"></mdb-icon>
+        </div>
+
+        <div class="modal-body">
+          <div class="text-center">
+            <p>{{(('AMOUNT') | translate) + ': ' + selectedElementsForDelete.length}}</p>
+          </div>
+        </div>
+
+        <div class="modal-footer justify-content-center">
+          <a mdbBtn type="button" color="danger" class="waves-effect delete-button" mdbWavesEffect data-dismiss="modal"
+             (click)="deleteSelectedElements(); deletionFrame.hide()">{{'YES' | translate}}</a>
+          <a type="button" mdbBtn color="danger" outline="true" class="waves-effect delete-canceled-button"
+             mdbWavesEffect
+             (click)="deletionFrame.hide()">{{'NO' | translate}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div mdbModal #warningFrame="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top"
+       id="warningFrameModalTop" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <p class="heading lead">{{'NOTHING_SELECTED_MESSAGE' | translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="warningFrame.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="modal-footer justify-content-center">
+          <a mdbBtn color="warning" type="button" outline="true" class="waves-effect" data-dismiss="modal"
+             mdbWavesEffect
+             (click)="warningFrame.hide()">{{'GO_BACK_MESSAGE' | translate}}</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div mdbModal #warningFrameNotPossibleDeletion="mdbModal" class="modal fade top" id="warningFrameNotPossibleDeletion"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <p class="heading lead">{{('DELETION_HEADING_MESSAGE') | translate}}</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  (click)="warningFrameNotPossibleDeletion.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="text-center">
+            <p>{{('DELETION_BODY_MESSAGE') | translate}}</p>
+          </div>
+        </div>
+
+        <div class="modal-footer justify-content-center">
+          <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
+             (click)="warningFrameNotPossibleDeletion.hide()">{{'GO_BACK_MESSAGE' | translate}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div mdbModal #filter="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="filter"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  (click)="filter.hide(); resetFrom(editForm)">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+        <form action="" class="filter-group" #editForm="ngForm">
+
+          <div class="row">
+
+            <div class="col-md-12">
+              <div class="md-form form-sm">
+                <input mdbInput type="text" class="form-control"
+                       name="fullName" id="fullName" ngModel fullName required>
+                <label for="fullName">{{'student.fullName' | translate}}</label>
+              </div>
+              <div class="md-form form-sm">
+                <input mdbInput type="email" class="form-control"
+                       name="email" id="email"
+                       ngModel email
+                >
+                <label for="email">{{'student.email' | translate}}</label>
+              </div>
+              <div class="md-form form-sm">
+                <lms-date-picker-input
+                  [(element)]="birthDayFilter"
+                  [textLabel]="('student.birthDay'| translate)"
+                  [notRequired]=true id="birthDay"
+                ></lms-date-picker-input>
+              </div>
+              <lms-entity-multiselect-input
+                [textLabel]="('student.languageLevels') | translate" [multiple]="true" [isFilter]="true"
+                [availableEntities]="selectLanguageLevels"
+                [(selectedEntities)]="tempLanguageLevels"></lms-entity-multiselect-input>
+              <lms-entity-multiselect-input
+                [textLabel]="('student.groups') | translate" [multiple]="true" [isFilter]="true"
+                [availableEntities]="selectGroups"
+                [(selectedEntities)]="tempGroups"></lms-entity-multiselect-input>
+            </div>
+          </div>
+        </form>
+
+        <div class="modal-footer justify-content-center">
+          <a mdbBtn type="button" outline="true" class="waves-effect field-filter-button" data-dismiss="modal"
+             mdbWavesEffect
+             (click)="filter.hide(); filterStudent(editForm); ">{{'SEARCH' | translate}}</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div mdbModal #addToGroup="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="addToGroup"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'Add-students-to-the-group'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addToGroup.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+        <form action="" class="filter-group">
+
+          <div class="row">
+
+            <strong class="col-12">{{('The-following-students-will-be-added-to-the-group'| translate)}}</strong>
+            <div class="col-12">
+              <div class="select-student-group">
+                <div *ngFor="let element of selectedElementsForDelete">
+                  <span>{{element.lastName}} {{element.firstName}}  {{element.secondName}}</span>
+                </div>
+              </div>
+
+              <lms-entity-multiselect-input
+                [textLabel]="('student.groups') | translate"
+                [multiple]="false"
+                [availableEntities]="selectGroups"
+                [(selectedEntities)]="selectedGroup">
+              </lms-entity-multiselect-input>
+            </div>
+          </div>
+        </form>
+
+        <div class="modal-footer justify-content-center">
+          <button [disabled]="loading" mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                  data-dismiss="modal"
+                  mdbWavesEffect
+                  (click)="addStudentsToGroup()"><span *ngIf="loading"
+                                                       class="spinner-border spinner-border-sm mr-1"></span> {{'Add-to-group' | translate}}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div mdbModal #fieldFilter="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="fieldFilter"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="fieldFilter.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+        <div class="checkbox-group">
+          <div *ngFor="let propertyName of allPropertyNames ">
+            <mdb-checkbox
+              [(ngModel)]="propertyName.selected"
+              (change)="fieldsFilters(propertyName.name)">{{(namespace + '.' + propertyName.name| translate)}}</mdb-checkbox>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <a mdbBtn type="button" outline="true" class="waves-effect field-filter-button" data-dismiss="modal"
+             mdbWavesEffect
+             (click)="fieldFilter.hide()">{{'GO_BACK_MESSAGE' | translate}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

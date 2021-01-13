@@ -1,0 +1,1177 @@
+<div class="lms-profile">
+  <mdb-card>
+    <div class="lms-buttons-row row">
+
+      <button mdbBtn class="add-button button-xl" size="sm" mdbWavesEffect (click)="returnToTable()">
+        <i class="fas fa-arrow-left"></i>
+        <span class="button-mb"> {{ "RETURN" | translate}}</span></button>
+
+      <button mdbBtn size="sm" mdbWavesEffect class="edit-button">
+        <i class="fas fa-pencil-alt"></i> <span class="button-mb"> {{ "Add-to-group" | translate}}</span></button>
+
+      <button mdbBtn size="sm" color="danger" mdbWavesEffect class="delete-button">
+        <i class="fas fa-trash-alt"></i>
+        <span class="button-mb"> {{ "DELETE" | translate}}</span></button>
+
+      <div class="dropdown info-dropdown" mdbDropdown>
+        <button mdbDropdownToggle mdbBtn size="sm" class="dropdown-toggle " type="button"
+                mdbWavesEffect>
+          <i class="far fa-compass"></i> <span class="dropdown-mb"> {{('REPORTS'|translate)}}</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right dropdown-primary ">
+          <a class="dropdown-item">{{('EXPORT-TO-XLS'|translate)}}</a>
+          <a class="dropdown-item">{{('PAY-TODAY'|translate)}}</a>
+
+        </div>
+      </div>
+
+      <div class="col text-right card-edit-link" *ngIf="activeTabIndex === 0 && isEditMode">
+        <a>
+          <mdb-icon *ngIf="isCardEditMode" (click)="isCardEditMode = !isCardEditMode" class="" fas
+                    icon="grip-vertical fa-2x"></mdb-icon>
+          <mdb-icon *ngIf="!isCardEditMode"
+                    (click)="isCardEditMode = !isCardEditMode;" style="color: #f35001" fas
+                    icon="grip-vertical fa-2x"></mdb-icon>
+        </a>
+      </div>
+
+    </div>
+  </mdb-card>
+  <div class="row">
+
+    <div class="profile-tab">
+      <mdb-tabset (getActiveTab)="setActiveTab($event)" [buttonClass]="'classic-tabs'" [contentClass]="'card'"
+                  class="classic-tabs ">
+        <mdb-tab [heading]="('STUDENT'| translate)">
+          <div class="p-0">
+            <div class="container-fluid p-2 profile-cards" *ngIf="!studentLoading">
+              <div class="row " [ngClass]="{'lms-dragging-animation':!isCardEditMode}"
+                   #dragAndDropGroup *ngIf="settings">
+                <div class="col-mb-12 col-lg-4 col-xl-4 p-1">
+                  <div class="lms-dragging-container lms-move-card-shadow">
+                    <div
+                      cdkDropList
+                      [cdkDropListConnectedTo]="[firstList, secondList]"
+                      #profileList="cdkDropList"
+                      [cdkDropListData]="settings.settingValue.blocks[0]"
+                      (cdkDropListDropped)="drop($event)"
+                      [style.min-height.px]="contentHeight"
+                      class="lms-dragging-list"
+                      [cdkDropListDisabled]="isCardEditMode">
+                      <div *ngFor="let number of settings.settingValue.blocks[0]">
+                        <div [ngSwitch]="number" class="lms-shake-box">
+                          <div *ngIf="number!= 2 || !isEditMode" cdkDrag class="pt-2 lms-dragging-box"
+                               (cdkDragStarted)="dragListHeightSet()">
+                            <div *ngSwitchCase="1" [ngTemplateOutlet]="cardProfilePhoto"></div>
+                            <div *ngSwitchCase="2" [ngTemplateOutlet]="cardProfileFields"></div>
+                            <div *ngSwitchCase="3" [ngTemplateOutlet]="card1"></div>
+                            <div *ngSwitchCase="4" [ngTemplateOutlet]="card2"></div>
+                            <div *ngSwitchCase="5" [ngTemplateOutlet]="card3"></div>
+                            <div *ngSwitchCase="6" [ngTemplateOutlet]="card4"></div>
+                            <div *ngSwitchCase="7" [ngTemplateOutlet]="card5"></div>
+                            <div *ngSwitchCase="8" [ngTemplateOutlet]="card6"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="pt-2 lms-dragging-box" cdkDrag cdkDragDisabled>
+                        <div class="ghost-block">
+                          <span></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-mb-12 col-lg-4 col-xl-4 p-1">
+                  <div class="lms-dragging-container">
+                    <div
+                      cdkDropList
+                      [cdkDropListConnectedTo]="[secondList, profileList]"
+                      [style.min-height.px]="contentHeight"
+                      #firstList="cdkDropList"
+                      [cdkDropListData]="settings.settingValue.blocks[1]"
+                      (cdkDropListDropped)="drop($event)"
+                      class="lms-dragging-list"
+                      [cdkDropListDisabled]="isCardEditMode">
+                      <div *ngFor="let number of settings.settingValue.blocks[1]">
+                        <div [ngSwitch]="number" class="lms-shake-box">
+                          <div *ngIf="number!= 2 || !isEditMode" cdkDrag class="pt-2 lms-dragging-box"
+                               (cdkDragStarted)="dragListHeightSet()">
+                            <div *ngSwitchCase="1" [ngTemplateOutlet]="cardProfilePhoto"></div>
+                            <div *ngSwitchCase="2" [ngTemplateOutlet]="cardProfileFields"></div>
+                            <div *ngSwitchCase="3" [ngTemplateOutlet]="card1"></div>
+                            <div *ngSwitchCase="4" [ngTemplateOutlet]="card2"></div>
+                            <div *ngSwitchCase="5" [ngTemplateOutlet]="card3"></div>
+                            <div *ngSwitchCase="6" [ngTemplateOutlet]="card4"></div>
+                            <div *ngSwitchCase="7" [ngTemplateOutlet]="card5"></div>
+                            <div *ngSwitchCase="8" [ngTemplateOutlet]="card6"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="pt-2 lms-dragging-box" cdkDrag cdkDragDisabled>
+                        <div class="ghost-block">
+                          <span></span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-mb-12 col-lg-4 col-xl-4 p-1">
+                  <div class="lms-dragging-container">
+                    <div
+                      cdkDropList
+                      [cdkDropListConnectedTo]="[firstList , profileList]"
+                      [cdkDropListData]="settings.settingValue.blocks[2]"
+                      (cdkDropListDropped)="drop($event)"
+                      #secondList="cdkDropList"
+                      [style.min-height.px]="contentHeight"
+                      class="lms-dragging-list"
+                      [cdkDropListDisabled]="isCardEditMode">
+                      <div *ngFor="let number of settings.settingValue.blocks[2]">
+                        <div [ngSwitch]="number" class="lms-shake-box">
+                          <div *ngIf="number!= 2 || !isEditMode" cdkDrag class="pt-2 lms-dragging-box"
+                               (cdkDragStarted)="dragListHeightSet()">
+                            <div *ngSwitchCase="1" [ngTemplateOutlet]="cardProfilePhoto"></div>
+                            <div *ngSwitchCase="2" [ngTemplateOutlet]="cardProfileFields"></div>
+                            <div *ngSwitchCase="3" [ngTemplateOutlet]="card1"></div>
+                            <div *ngSwitchCase="4" [ngTemplateOutlet]="card2"></div>
+                            <div *ngSwitchCase="5" [ngTemplateOutlet]="card3"></div>
+                            <div *ngSwitchCase="6" [ngTemplateOutlet]="card4"></div>
+                            <div *ngSwitchCase="7" [ngTemplateOutlet]="card5"></div>
+                            <div *ngSwitchCase="8" [ngTemplateOutlet]="card6"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="pt-2 lms-dragging-box" cdkDrag cdkDragDisabled>
+                        <div class="ghost-block">
+                          <span></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="!settings">
+                <div *ngTemplateOutlet="cardProfileFields"></div>
+              </div>
+            </div>
+            <div *ngIf="studentLoading">
+              <div class="">
+                <div class="text-center">
+                  <div class="spinner-border lms-spinner-box" role="status">
+                    <span class="sr-only  lms-spinner">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </mdb-tab>
+        <mdb-tab [heading]="'PREFERRED-SCHEDULES' | translate" *ngIf="isEditMode">
+          <div class="row">
+            <div class="col-12 second-tab">
+              <router-outlet name="preferred-schedule-outlet"></router-outlet>
+            </div>
+          </div>
+        </mdb-tab>
+        <mdb-tab [heading]="'AGREEMENTS' | translate" *ngIf="isEditMode">
+          <div class="row">
+            <div class="col-12">
+              <router-outlet name="agreement-outlet"></router-outlet>
+            </div>
+          </div>
+        </mdb-tab>
+        <mdb-tab [heading]="'EVENTS' | translate" *ngIf="isEditMode">
+          <div class="row">
+            <div class="col-12">
+              <router-outlet name="student-events"></router-outlet>
+            </div>
+          </div>
+        </mdb-tab>
+        <mdb-tab [heading]="'ATTENDANCES' | translate" *ngIf="isEditMode">
+          <div class="row">
+            <div class="col-12">
+              <lms-attendance-widget></lms-attendance-widget>
+            </div>
+          </div>
+        </mdb-tab>
+      </mdb-tabset>
+    </div>
+
+  </div>
+  <div mdbModal #paymentEdit="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="paymentEdit"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="paymentEdit.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="pt-4">
+          <form action="" #editForm="ngForm">
+
+            <div class="modal-footer justify-content-center">
+              <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                      data-dismiss="modal"
+                      mdbWavesEffect>
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span> {{'UPDATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mdbModal #tutorsEdit="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="tutorsEdit"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="tutorsEdit.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="pt-4">
+          <form action="" #editForm="ngForm">
+
+            <div class="modal-footer justify-content-center">
+              <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                      data-dismiss="modal"
+                      mdbWavesEffect>
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span> {{'UPDATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mdbModal #accountsAndSubscriptionsEdit="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top"
+       id="accountsAndSubscriptionsEdit"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  (click)="accountsAndSubscriptionsEdit.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="pt-4">
+          <form action="" #editForm="ngForm">
+
+            <div class="modal-footer justify-content-center">
+              <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                      data-dismiss="modal"
+                      mdbWavesEffect
+              >
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span> {{'UPDATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mdbModal #agreementsEdit="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top"
+       id="agreementsEdit" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="agreementsEdit.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="pt-4">
+          <form action="" #editForm="ngForm">
+
+            <div class="modal-footer justify-content-center">
+              <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                      data-dismiss="modal"
+                      mdbWavesEffect
+              >
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span> {{'UPDATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mdbModal #groupsEdit="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="groupsEdit"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="groupsEdit.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="pt-4">
+          <form action="" #editForm="ngForm">
+            <div class="col-md-12">
+              <div class="md-form">
+                <lms-entity-multiselect-input
+                  [textLabel]="('student.groups') | translate"
+                  [multiple]="true"
+                  [availableEntities]="availableGroups"
+                  [(selectedEntities)]="studentGroups"></lms-entity-multiselect-input>
+
+              </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                      data-dismiss="modal"
+                      mdbWavesEffect
+                      (click)="updateGroups()">
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span> {{'UPDATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mdbModal #contactsEdit="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="contactsEdit"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="contactsEdit.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="pt-4">
+          <form action="" #editForm="ngForm">
+            <div class="col">
+              <div class="md-form form-sm ">
+                <input #inputContactEdit
+                       mdbInput type="email" class="form-control"
+                       [(ngModel)]="email" name="email" id="email" (ngModelChange)="onChange($event)" required>
+                <div *ngIf="valid == false">
+                  Email not valid.
+                </div>
+                <label for="email">{{'EMAIL' | translate}}</label>
+              </div>
+            </div>
+            <div *ngFor="let contact of contacts; let i = index">
+              <div [ngSwitch]="contact.type">
+                <div *ngSwitchCase="'PHONE'">
+                  <div class="row">
+                    <div class="col">
+                      <lms-text-input #inputContactEdit
+                                      id="phoneNumber"
+                                      [columnName]="'PHONE '+i"
+                                      [textLabel]="('student.phoneNumber'|translate)"
+                                      [(element)]="contact.value"
+                                      [type]="'tel'"
+                      ></lms-text-input>
+                    </div>
+                    <div class="m-3">
+                      <a (click)="deleteContact(contact)">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'WHATSAPP'">
+                  <div class="row">
+                    <div class="col">
+                      <lms-text-input #inputContactEdit
+                                      [columnName]="'WHATSAPP '+i"
+                                      [textLabel]="('student.whatsapp'|translate)"
+                                      [(element)]="contact.value"
+                                      [type]="'text'"
+                      ></lms-text-input>
+                    </div>
+                    <div class="m-3">
+                      <a (click)="deleteContact(contact)">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'VIBER'">
+                  <div class="row">
+                    <div class="col">
+                      <lms-text-input #inputContactEdit
+                                      [columnName]="'VIBER'+ i"
+                                      [textLabel]="('student.viber'|translate)"
+                                      [(element)]="contact.value"
+                                      [type]="'text'"
+                      ></lms-text-input>
+                    </div>
+                    <div class="m-3">
+                      <a (click)="deleteContact(contact)">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'TELEGRAM'">
+                  <div class="row">
+                    <div class="col">
+                      <lms-text-input #inputContactEdit
+                                      [columnName]="'TELEGRAM'+i"
+                                      [textLabel]="('student.telegram'|translate)"
+                                      [(element)]="contact.value"
+                                      [type]="'text'"
+                      ></lms-text-input>
+                    </div>
+                    <div class="m-3">
+                      <a (click)="deleteContact(contact)">
+                        <i class="fas  fa-trash-alt"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                      data-dismiss="modal"
+                      mdbWavesEffect
+                      (click)="updateContacts()">
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span> {{'UPDATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mdbModal #contactsAdd="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id="contactsAdd"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="contactsAdd.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="p-4">
+          <form action="" #editForm="ngForm">
+            <lms-multiselect-input #inputContactAdd
+                                   [textLabel]="('CONTACT-TYPE'|translate)"
+                                   [multiple]="false"
+                                   [(selectedElements)]="contactType"
+                                   [options]="selectContactTypes"></lms-multiselect-input>
+            <lms-text-input #inputContactAdd
+                            [textLabel]="('CONTACT'|translate)"
+                            [type]="'text'"
+                            columnName="contactValue"
+                            [(element)]="contact.value">
+
+            </lms-text-input>
+            <div class="modal-footer justify-content-center">
+              <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                      data-dismiss="modal"
+                      mdbWavesEffect
+                      (click)="addContacts()">
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span> {{'UPDATE' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div mdbModal #fieldEditModal="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top"
+       id="fieldSettingsModal"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'PERSONAL_DATA'| translate}}</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  (click)="fieldEditModal.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+        <div class="p-4">
+          <div *ngTemplateOutlet="fieldEdit"></div>
+          <div *ngTemplateOutlet="saveButton"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div mdbModal #fieldSettingsModal="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top" id=""
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p class="heading lead">{{'SETTING_FIELDS'| translate}}</p>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  (click)="fieldSettingsModal.hide()">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="p-4">
+
+          <form action="" #editForm="ngForm">
+            <div *ngTemplateOutlet="fieldsSettings"></div>
+          </form>
+          <div class="col-12">
+            <div class="text-center">
+
+              <button [disabled]="loading" mdbBtn type="button" outline="true"
+                      class="waves-effect field-filter-button"
+                      mdbWavesEffect (click)="save()">
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span>
+                {{'UPDATE' | translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div mdbModal #saveImgModal="mdbModal" [config]="{ignoreBackdropClick: true}" class="modal fade top"
+       id="saveImg"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header field-filter-header">
+          <p
+            class="heading lead heading-save-img">{{('ARE_YOU_SURE_YOU_WANT_TO_SAVE_THIS_PHOTO_TO_YOUR_PROFILE' | translate) + '?'}}</p>
+        </div>
+        <div class="pt-4">
+          <div class="modal-footer justify-content-center">
+            <button mdbBtn type="button" outline="true" class="waves-effect field-filter-button"
+                    data-dismiss="modal"
+                    mdbWavesEffect
+                    (click)="save(); saveImgModal.hide()">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              {{'SAVE' | translate}}
+            </button>
+            <button mdbBtn mdbWavesEffect outline="true"
+                    class="waves-effect btn-cancel-save-img" data-dismiss="modal"
+                    (click)="removeProfileImg(); saveImgModal.hide()">
+              {{'NO' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #fieldEditAddMode>
+    <form action="" #editForm="ngForm">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="md-form form-sm">
+            <input mdbInput type="text" class="form-control"
+                   [(ngModel)]="student.firstName" name="firstName" id="firstNameAdd" required>
+            <label for="firstNameAdd">{{'FIRSTNAME' | translate}}</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="md-form form-sm">
+            <input mdbInput type="text" class="form-control"
+                   [(ngModel)]="student.secondName" name="secondName" id="secondNameAdd"
+                   required>
+            <label for="secondNameAdd">{{'SECONDNAME' | translate}}</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="md-form form-sm">
+            <input mdbInput type="text" class="form-control"
+                   [(ngModel)]="student.lastName" name="lastName" id="lastNameAdd" required>
+            <label for="lastNameAdd">{{'LASTNAME' | translate}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="md-form form-sm">
+            <input mdbInput type="text" class="form-control"
+                   [(ngModel)]="student.username" name="username" id="usernameAdd" required>
+            <label for="usernameAdd">{{'USERNAME' | translate}}</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="md-form form-sm ">
+            <input
+
+              mdbInput type="email" class="form-control"
+              [(ngModel)]="email" name="email" id="_emailAdd" (ngModelChange)="onChange($event)"
+              required>
+            <div *ngIf="valid == false">
+              Email not valid.
+            </div>
+            <label for="_emailAdd">{{'EMAIL' | translate}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row p-0">
+        <div class="col-md-6 p-0">
+          <lms-date-picker-input
+            [(element)]="student.birthDay"
+            [textLabel]="('student.birthDay') | translate"></lms-date-picker-input>
+        </div>
+        <div class="col-md-6 p-0">
+          <lms-multiselect-input id="midAdd"
+                                 [isEnum]="true"
+                                 [textLabel]="(namespace+ '.gender') | translate" [multiple]="false"
+                                 [options]="selectGender"
+                                 [(selectedElements)]="student.gender"></lms-multiselect-input>
+        </div>
+      </div>
+      <lms-entity-multiselect-input
+        [textLabel]="('student.languageLevels') | translate"
+        [multiple]="true"
+        [availableEntities]="availableLanguageLevels"
+        [(selectedEntities)]="student.languageLevels"></lms-entity-multiselect-input>
+      <lms-entity-multiselect-input
+        [textLabel]="('student.groups') | translate"
+        [multiple]="true"
+        [availableEntities]="availableGroups"
+        [(selectedEntities)]="student.groups"></lms-entity-multiselect-input>
+      <div *ngTemplateOutlet="fieldsSettings"></div>
+
+    </form>
+    <div class="col-12">
+      <div class="text-center">
+
+        <button [disabled]="loading" mdbBtn type="button" outline="true"
+                class="waves-effect field-filter-button"
+                mdbWavesEffect (click)="updateStudent(editForm)">
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span>
+          {{'UPDATE' | translate}}
+        </button>
+      </div>
+    </div>
+    <div *ngTemplateOutlet="saveButton"></div>
+  </ng-template>
+
+
+  <ng-template #fieldEdit>
+    <form action="" #editForm="ngForm">
+      <div class="col-md-12">
+        <div class="md-form form-sm">
+          <input mdbInput type="text" class="form-control"
+                 [(ngModel)]="student.firstName" name="firstName" id="firstName" required>
+          <label for="firstName">{{'FIRSTNAME' | translate}}</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="md-form form-sm">
+          <input mdbInput type="text" class="form-control"
+                 [(ngModel)]="student.secondName" name="secondName" id="secondName"
+                 required>
+          <label for="secondName">{{'SECONDNAME' | translate}}</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="md-form form-sm">
+          <input mdbInput type="text" class="form-control"
+                 [(ngModel)]="student.lastName" name="lastName" id="lastName" required>
+          <label for="lastName">{{'LASTNAME' | translate}}</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="md-form form-sm">
+          <input mdbInput type="text" class="form-control"
+                 [(ngModel)]="student.username" name="username" id="username" required>
+          <label for="username">{{'USERNAME' | translate}}</label>
+        </div>
+      </div>
+      <div class="col" *ngIf="!isEditMode">
+        <div class="md-form form-sm ">
+          <input
+
+            mdbInput type="email" class="form-control"
+            [(ngModel)]="email" name="email" id="_email" (ngModelChange)="onChange($event)"
+            required>
+          <div *ngIf="valid == false">
+            Email not valid.
+          </div>
+          <label for="_email">{{'EMAIL' | translate}}</label>
+        </div>
+      </div>
+      <lms-date-picker-input
+        [(element)]="student.birthDay"
+        [textLabel]="('student.birthDay') | translate"></lms-date-picker-input>
+      <div *ngIf="!isEditMode">
+        <div *ngTemplateOutlet="fieldsSettings"></div>
+      </div>
+      <lms-entity-multiselect-input
+        [textLabel]="('student.languageLevels') | translate"
+        [multiple]="true"
+        [availableEntities]="availableLanguageLevels"
+        [(selectedEntities)]="student.languageLevels"></lms-entity-multiselect-input>
+      <lms-entity-multiselect-input
+        [textLabel]="('student.groups') | translate"
+        [multiple]="true"
+        [availableEntities]="availableGroups"
+        [(selectedEntities)]="student.groups"></lms-entity-multiselect-input>
+      <lms-multiselect-input id="mid"
+                             [isEnum]="true"
+                             [textLabel]="(namespace+ '.gender') | translate" [multiple]="false"
+                             [options]="selectGender"
+                             [(selectedElements)]="student.gender"></lms-multiselect-input>
+    </form>
+    <div class="col-12">
+      <div class="text-center">
+
+        <button [disabled]="loading" mdbBtn type="button" outline="true"
+                class="waves-effect field-filter-button"
+                mdbWavesEffect (click)="updateStudent(editForm)">
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span>
+          {{'UPDATE' | translate}}
+        </button>
+      </div>
+    </div>
+    <div *ngTemplateOutlet="saveButton"></div>
+  </ng-template>
+
+  <ng-template #fieldsSettings>
+    <div class="col-md-12">
+      <div class="md-form form-sm ">
+        <lms-color-picker-input [(element)]="student.colorCode"
+                                [textLabel]="('student.colorCode') | translate"
+        ></lms-color-picker-input>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #cardProfilePhoto>
+    <mdb-card class="profile-card " cascade="true" narrower="true">
+
+      <div class="row p-3 card-title">
+        <h5 class="font-bold col-mb-8">
+          <strong>{{studentLastName}} {{studentFirstName}}</strong>
+        </h5>
+        <div class="lms-text-right edit-link col-mb-4" *ngIf="isEditMode">
+
+          <a (click)="fieldSettingsModal.show()">
+            <strong class="p-2">
+              <i class="fas fa-cog"></i>
+            </strong>
+          </a>
+          <a (click)="fieldEditModal.show()">
+            <strong class="p-2">
+              <mdb-icon fas icon="pencil-alt"></mdb-icon>
+            </strong>
+          </a>
+        </div>
+      </div>
+
+      <div class="view view-cascade overlay hm-white-slight waves-light"
+           mdbWavesEffect *ngIf="isEditMode">
+
+        <mdb-file-upload #uploader
+                         [defaultFile]="student.imageUrl ? student.imageUrl : 'assets/default-profile-pic.jpg'"
+                         [customText]="{
+                                        fileText: 'DRAG_AND_DROP_A_FILE_HERE_OR_CLICK' | translate,
+                                        removeText: 'DELETE' | translate,
+                                        imageFileText: 'DRAG_AND_DROP_OR_CLICK_TO_REPLACE' | translate
+                         }"
+                         (fileAdded)="addProfileImg($event)"
+                         (fileRemoved)="removeProfileImg()"
+        ></mdb-file-upload>
+
+      </div>
+
+      <mdb-card-body cascade="true" *ngIf="isEditMode">
+
+        <h5 class="lms-burgundy-text text-center" *ngIf="isEditMode">
+          <strong>{{studentUsername}}</strong>
+        </h5>
+        <hr>
+        <div class="row text-center" *ngIf="isEditMode">
+          <div class="col-md-8 lms-text-left">{{'VISITED-LESSONS' | translate}}:</div>
+          <div class="col-md-4 lms-text-right">
+            <strong>9</strong>
+          </div>
+        </div>
+        <hr>
+        <div class="row text-center" *ngIf="isEditMode">
+          <div class="col-md-8 lms-text-left">{{'AGE' | translate}}:</div>
+          <div class="col-md-4 lms-text-right">
+            <span>{{ageOfStudent + ' ' + ('YEARS'|translate)}}</span>
+          </div>
+          <div class="col-md-8 lms-text-left">{{namespace + '.birthDay' | translate}}:</div>
+          <div class="col-md-4 lms-text-right">
+            <span>{{student.birthDay |date : 'd' }}
+              {{student.birthDay |date : 'MMMM' | translate}}</span>
+          </div>
+        </div>
+        <hr *ngIf="isEditMode">
+      </mdb-card-body>
+
+    </mdb-card>
+
+  </ng-template>
+  <ng-template #cardProfileFields>
+    <mdb-card class="profile-card " cascade="true" narrower="true">
+
+      <h5 class="card-title p-3 font-bold">
+        <strong>{{('ADD-NEW-STUDENT' | translate)}}</strong>
+      </h5>
+      <mdb-card-body cascade="true">
+
+        <div *ngTemplateOutlet="fieldEditAddMode">
+
+        </div>
+
+      </mdb-card-body>
+
+    </mdb-card>
+
+  </ng-template>
+  <ng-template #card1>
+    <mdb-card>
+      <div class="row p-3 card-title">
+        <h5 class="font-bold">
+          <strong>{{('PAYMENT'|translate)}}</strong>
+        </h5>
+        <div class="lms-text-right edit-link" *ngIf="isEditMode">
+
+          <a>
+            <strong class="p-2" (click)="paymentEdit.show()">
+              <mdb-icon fas icon="pencil-alt"></mdb-icon>
+            </strong>
+          </a>
+        </div>
+      </div>
+      <mdb-card-body cascade="true" class="text-center" *ngIf="isEditMode">
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-left">{{'NUMBER-OF-PAYMENTS' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-right">
+            <a><strong>4</strong></a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-left">{{'PAYMENT-FOR-CLASSES' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-right">
+            <strong>1550</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-left">{{'TOTAL-BALANCE' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-right">
+            <strong>3600</strong>
+          </div>
+        </div>
+        <hr>
+
+      </mdb-card-body>
+    </mdb-card>
+  </ng-template>
+  <ng-template #card2>
+    <mdb-card>
+
+      <div class="row p-3 card-title">
+        <h5 class="font-bold">
+          <strong>{{('TUTORS'|translate)}}</strong>
+        </h5>
+        <div class="lms-text-right edit-link" *ngIf="isEditMode">
+
+          <a>
+            <strong class="p-2" (click)="tutorsEdit.show()">
+              <mdb-icon fas icon="pencil-alt"></mdb-icon>
+            </strong>
+          </a>
+        </div>
+      </div>
+      <mdb-card-body cascade="true" class="text-center" *ngIf="isEditMode">
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'LANGUAGES' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>En</strong></a>
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'TUTOR' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>Tutor Tutor Tutor</strong></a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'LANGUAGES' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>Ua</strong></a>
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'TUTOR' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>Tutor1 Tutor1 Tutor1</strong></a>
+          </div>
+        </div>
+        <hr>
+
+      </mdb-card-body>
+    </mdb-card>
+  </ng-template>
+  <ng-template #card3>
+    <mdb-card>
+
+      <div class="row p-3 card-title">
+        <h5 class="font-bold">
+          <strong>{{('AGREEMENTS'|translate)}}</strong>
+        </h5>
+        <div class="lms-text-right edit-link" *ngIf="isEditMode">
+
+          <a>
+            <strong class="p-2" (click)="agreementsEdit.show()">
+              <mdb-icon fas icon="pencil-alt"></mdb-icon>
+            </strong>
+          </a>
+        </div>
+      </div>
+
+
+      <mdb-card-body cascade="true" class="text-center" *ngIf="isEditMode">
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6   lms-text-left">{{'TOTAL-AMOUNT-OF-AGREEMENTS' | translate}}:
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>4500</strong></a>
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'BALANCE-UNDER-AGREEMENTS' | translate}}:
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>-3400</strong></a>
+          </div>
+        </div>
+        <hr>
+      </mdb-card-body>
+    </mdb-card>
+  </ng-template>
+  <ng-template #card4>
+    <mdb-card>
+      <div class="row p-3 card-title">
+        <h5 class="font-bold">
+          <strong>{{('CONTACTS'|translate)}}</strong>
+        </h5>
+        <div class="lms-text-right edit-link" *ngIf="isEditMode">
+          <a>
+            <strong class="p-2" (click)="contactsAdd.show()">
+              <mdb-icon fas icon="plus"></mdb-icon>
+            </strong>
+          </a>
+          <a>
+            <strong class="p-2" (click)="contactsEdit.show()">
+              <mdb-icon fas icon="pencil-alt"></mdb-icon>
+            </strong>
+          </a>
+        </div>
+      </div>
+      <mdb-card-body cascade="true" class="text-center" *ngIf="isEditMode">
+        <hr>
+        <div *ngFor="let phoneNum of student.contacts">
+          <div *ngIf="phoneNum.type == 'PHONE'" class="row">
+            <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left ">{{'student.phoneNumber' | translate}}:</div>
+            <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+              <strong>{{phoneNum.value}}</strong>
+            </div>
+            <hr>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left ">{{'student.email' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+
+            <strong>{{student.email}}</strong>
+          </div>
+        </div>
+        <hr>
+
+        <span *ngFor="let contact of student.contacts; let i = index">
+                          <span [ngSwitch]="contact.type" class="text-center">
+                            <span *ngSwitchCase="'WHATSAPP'">
+                              <a class="icons-sm px-3 " [mdbTooltip]="contact.value">
+                                <mdb-icon fab icon="whatsapp"></mdb-icon>
+                              </a>
+                            </span>
+                            <span *ngSwitchCase="'VIBER'">
+                              <a class="icons-sm  px-3 " [mdbTooltip]="contact.value">
+                                <mdb-icon fab icon="viber"></mdb-icon>
+                              </a>
+                            </span>
+                            <span *ngSwitchCase="'TELEGRAM'">
+                              <a class="icons-sm  px-3" [mdbTooltip]="contact.value">
+                                <mdb-icon fab icon="telegram-plane"></mdb-icon>
+                              </a>
+                            </span>
+                          </span>
+                        </span>
+
+        <hr>
+      </mdb-card-body>
+    </mdb-card>
+  </ng-template>
+  <ng-template #card5>
+    <mdb-card>
+
+      <div class="row p-3 card-title">
+        <h5 class="font-bold">
+          <strong>{{('ACCOUNTS-AND-SUBSCRIPTIONS'|translate)}}</strong>
+        </h5>
+        <div class="lms-text-right edit-link" *ngIf="isEditMode">
+
+          <a>
+            <strong class="p-2" (click)="accountsAndSubscriptionsEdit.show()">
+              <mdb-icon fas icon="pencil-alt"></mdb-icon>
+            </strong>
+          </a>
+        </div>
+      </div>
+
+      <mdb-card-body cascade="true" class="text-center" *ngIf="isEditMode">
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'SUBSCRIPTION' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>UA-Standard</strong></a>
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'LANGUAGES' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>Ukrainian</strong></a>
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'ACCOUNT-BALANCE' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>-1100</strong></a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'SUBSCRIPTION' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>En-Standard</strong></a>
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'LANGUAGES' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>English</strong></a>
+          </div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-left">{{'ACCOUNT-BALANCE' | translate}}:</div>
+          <div class="col-sm-6 col-lg-12 col-xl-6  lms-text-right">
+            <a><strong>-3400</strong></a>
+          </div>
+        </div>
+        <hr>
+
+      </mdb-card-body>
+    </mdb-card>
+  </ng-template>
+  <ng-template #card6>
+    <mdb-card>
+
+
+      <div class="row p-3 card-title">
+        <h5 class="font-bold">
+          <strong>{{('GROUPS'|translate)}}</strong>
+        </h5>
+
+        <div class="lms-text-right edit-link" *ngIf="isEditMode">
+
+          <a>
+            <strong class="p-2" (click)="groupsEdit.show()">
+              <mdb-icon fas icon="pencil-alt"></mdb-icon>
+            </strong>
+          </a>
+        </div>
+      </div>
+
+
+      <mdb-card-body cascade="true" class="text-center" *ngIf="isEditMode">
+        <hr>
+        <div *ngIf="isEditMode">
+          <div *ngIf="student.groups.length === 0">
+            <strong>{{'THE-STUDENT-DOES-NOT-BELONG-TO-ANY-GROUP'|translate}}</strong>
+            <hr>
+          </div>
+        </div>
+        <div *ngIf="isEditMode">
+          <div *ngIf="student.groups.length >0">
+            <div *ngFor="let group of student.groups">
+              <div class="row">
+                <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-left">{{'group.name' | translate}}:</div>
+                <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-right">
+                  <a><strong>{{group.name}}</strong></a>
+                </div>
+                <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-left">{{'group.language' | translate}}:</div>
+                <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-right">
+                  <a><strong>{{group.language.name}}</strong></a>
+                </div>
+                <div class="col-sm-6 col-lg-12 col-xl-6 lms-text-left">{{'group.languageLevels' | translate}}:
+                </div>
+
+              </div>
+              <hr>
+            </div>
+          </div>
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+  </ng-template>
+  <ng-template #saveButton>
+    <div class="row ">
+
+    </div>
+  </ng-template>
+
+</div>
+

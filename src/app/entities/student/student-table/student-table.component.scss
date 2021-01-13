@@ -1,0 +1,472 @@
+.lms-table {
+
+  .lms-buttons-grid {
+    @media screen and (max-width: 1080px) {
+
+      .info-dropdown, .edit-dropdown {
+        width: 50%;
+
+        button {
+          width: Calc(100% - 12px) !important;
+        }
+      }
+
+      button {
+        width: Calc(50% - 12px);
+      }
+
+      .md-form {
+        width: Calc(50% - 12px);
+        margin: 0 auto;
+      }
+    }
+    @media screen and (max-width: 576px) {
+
+      .btn.btn-sm {
+        width: 100%;
+      }
+
+
+      .info-dropdown, .edit-dropdown {
+        width: Calc(100%);
+      }
+
+      .col {
+        width: Calc(100% - 12px);
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .lms-buttons-grid-row {
+    @media screen and (max-width: 760px) {
+
+      .info-dropdown, .edit-dropdown {
+        width: 50%;
+
+        button {
+          width: Calc(100% - 12px) !important;
+        }
+      }
+
+      button {
+        width: Calc(50% - 12px);
+      }
+
+      .md-form {
+        width: Calc(50% - 12px);
+        margin: 0 auto;
+      }
+    }
+
+  }
+
+
+  .page-link {
+    margin-left: 2px;
+    margin-right: 2px;
+    border-radius: 50%;
+    transition: all 0.3s linear;
+    outline: 0;
+    border: 0;
+  }
+
+  .page-link:hover {
+    color: #f35001 !important;
+    transition: all 0.3s linear;
+    background-color: #eee !important;
+  }
+
+  .filter-modal-link:hover {
+    color: #f35001 !important;
+  }
+
+  .white-skin .dropdown-menu a:hover, .white-skin .dropdown-menu a:focus, .white-skin .dropdown-menu a:active {
+    background: #f35001 !important;
+  }
+
+
+  a, span {
+    font: 12.8px Roboto, sans-serif !important;
+  }
+
+  mdb-select-dropdown .dropdown-content li > a, mdb-select-dropdown .dropdown-content li > span {
+    color: #734457 !important;
+  }
+
+
+  .lms-buttons-row {
+    margin: 19px 19px 0 19px;
+
+    .btn.btn-sm {
+      padding-left: 1.6rem !important;
+      padding-right: 1.6rem !important;
+      font-size: .64rem;
+      height: 29.6px !important;
+    }
+
+    mdb-date-picker .md-form .form-control {
+      height: unset !important;
+      margin-top: -1.25px !important;
+
+    }
+
+    .datepicker-icon {
+      top: -5px !important;
+    }
+
+
+    .md-form {
+      margin: 6px !important;
+      display: flex;
+      min-width: 100px;
+    }
+
+    .search {
+      margin: 6px;
+    }
+
+    .col {
+      padding: 0 !important;
+    }
+
+    .md-form {
+      label {
+        top: -8px
+      }
+
+      .form-control {
+        margin: unset !important;
+        padding: unset !important;
+        height: 28.6px;
+      }
+    }
+
+
+    .dropdown .dropdown-menu.dropdown-primary .dropdown-item.active, .dropdown .dropdown-menu.dropdown-primary .dropdown-item:active, .dropdown .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropleft .dropdown-menu.dropdown-primary .dropdown-item.active, .dropleft .dropdown-menu.dropdown-primary .dropdown-item:active, .dropleft .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropright .dropdown-menu.dropdown-primary .dropdown-item.active, .dropright .dropdown-menu.dropdown-primary .dropdown-item:active, .dropright .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropup-material .dropdown-menu.dropdown-primary .dropdown-item.active, .dropup-material .dropdown-menu.dropdown-primary .dropdown-item:active, .dropup-material .dropdown-menu.dropdown-primary .dropdown-item:hover {
+      background: #734457 !important;
+    }
+
+    .dropdown-toggle {
+      background-color: #734457;
+      color: white !important;
+    }
+
+    .dropdown-menu-right {
+      top: 2px !important;
+      margin: 0 !important;
+    }
+
+    .lms-button-mb, .button-mb {
+      display: none;
+    }
+
+    .dropdown-mb {
+      display: none;
+    }
+
+
+    @media screen and (max-width: 300px) {
+      .dropdown-mb, .lms-button-mb, .button-mb {
+        display: none;
+      }
+    }
+
+  }
+
+  .filter-modal-link, .field-modal-link, .lms-page-dropdown {
+
+    i {
+      padding: 3.6px 15px 6.4px !important;
+      color: #734457;
+      margin-top: 12px;
+    }
+
+    i:hover {
+      color: #f35001 !important;
+    }
+
+  }
+
+  .row.pagination-row {
+    margin: 10px 19px 10px 20px !important;
+    padding: 0 0.5rem;
+
+    span {
+      white-space: pre-wrap;
+    }
+
+    .pagination-top {
+      .row {
+        margin: unset !important;
+      }
+
+      border: unset !important;
+      @media screen and (max-width: 760px) {
+        display: block;
+        width: 100%;
+      }
+
+      hr {
+        border: unset;
+      }
+
+      lms-pagination {
+
+        .mb-4, .my-4 {
+          margin-bottom: unset !important;
+        }
+
+        .mt-4, .my-4 {
+          margin-top: unset !important;
+        }
+      }
+
+
+    }
+
+    .page-text-top {
+      margin-left: auto;
+
+      .pages.row {
+        margin: unset !important;
+      }
+
+      .dropdown-toggle::after {
+        border: unset !important;
+        margin-left: unset !important;
+
+
+      }
+
+      .dropdown .dropdown-menu.dropdown-primary .dropdown-item.active, .dropdown .dropdown-menu.dropdown-primary .dropdown-item:active, .dropdown .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropleft .dropdown-menu.dropdown-primary .dropdown-item.active, .dropleft .dropdown-menu.dropdown-primary .dropdown-item:active, .dropleft .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropright .dropdown-menu.dropdown-primary .dropdown-item.active, .dropright .dropdown-menu.dropdown-primary .dropdown-item:active, .dropright .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropup-material .dropdown-menu.dropdown-primary .dropdown-item.active, .dropup-material .dropdown-menu.dropdown-primary .dropdown-item:active, .dropup-material .dropdown-menu.dropdown-primary .dropdown-item:hover {
+        background-color: #f35001 !important;
+      }
+
+      .lms-page-dropdown {
+
+        .dropdown-toggle {
+          display: inline;
+        }
+
+        .dropdown-menu {
+          top: -4px !important;
+          margin: 0 !important;
+          width: unset !important;
+        }
+
+
+        .dropdown-toggle {
+          color: #734457 !important;
+          text-decoration: none;
+
+          span.bold-text {
+            color: #734457;
+          }
+
+
+        }
+
+        .dropdown-toggle:hover {
+          color: #f35001 !important;
+          border-color: #f35001;
+        }
+
+        .dropdown-menu {
+          left: -115px;
+        }
+
+      }
+
+
+    }
+  }
+
+  .table-wrapper {
+    overflow: auto !important;
+  }
+
+  table {
+
+    mdb-checkbox .form-check {
+      padding-top: 6px !important;
+    }
+
+    th, td {
+      padding: 0.25rem;
+    }
+
+    th, td {
+      vertical-align: middle !important;
+    }
+
+  }
+
+  a {
+    color: #734457 !important;
+  }
+
+  tbody {
+    a:hover {
+      color: #f35001 !important;
+    }
+
+  }
+
+  mdb-checkbox.checkbox-check-mark-color [type="checkbox"]:checked + label:before {
+    border-color: transparent var(--current-check-mark-color) var(--current-check-mark-color) transparent;
+  }
+
+  mdb-checkbox.checkbox-border-color [type="checkbox"] + label:before {
+    border-color: var(--current-border-color);
+  }
+
+
+  .delete-canceled-button {
+    background: #734457;
+    color: #de6a39 !important;
+    border: #de6a39 solid 1px !important;
+  }
+
+  .delete-header {
+    background: #de6a39;
+    color: #734457 !important;
+  }
+
+
+  .info-dropdown {
+    margin-bottom: 5px;
+  }
+
+
+  @media screen and(max-width: 760px) {
+    .lms-button-mb {
+      display: inline;
+    }
+    .table td, th.info, .th-lg {
+      text-align: center;
+    }
+    .mobile-tbody {
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: .2rem;
+    }
+
+
+    .dropdown-mb, .button-mb {
+      display: inline;
+    }
+
+    .button-mb {
+      display: inline;
+    }
+
+    mdb-checkbox .form-check {
+      text-align: unset !important;
+    }
+    .form-check-input[type=checkbox] + label, label.btn input[type=checkbox] + label {
+      text-align: unset !important;
+    }
+    tfoot, thead {
+      width: 100%;
+    }
+
+
+    nav {
+      margin: 0 auto;
+    }
+    tfoot, thead {
+      td.pr-0 {
+        padding: unset !important;
+      }
+
+      a, .pages {
+        margin: 0 auto;
+        position: center;
+      }
+
+      .table thead th {
+        border-bottom: unset;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      td {
+        border: none !important;
+        position: relative;
+      }
+
+
+    }
+
+    tbody {
+
+      th.th-lg {
+        text-align: center;
+      }
+
+      .table thead th {
+        border-bottom: unset;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      td, th {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+
+        a {
+          position: center;
+        }
+      }
+    }
+
+  }
+
+
+  .small-text {
+    font-size: 0.9rem;
+  }
+
+
+  .modal form {
+    margin: 30px;
+  }
+
+  .modal-center form {
+    margin: 30px;
+  }
+
+
+  .checkbox-group {
+    margin: 30px auto;
+  }
+
+
+  .modal-dialog.modal-notify.modal-warning .field-filter-header {
+    background-color: #ffd600 !important;
+
+  }
+
+  .contact-icon {
+    font-size: 0.75rem;
+    margin-right: 0.15rem;
+  }
+
+  .select-student-group {
+    margin: 30px;
+  }
+
+
+  .field-filter-button {
+    background: #734457;
+    color: white !important;
+  }
+
+
+}
